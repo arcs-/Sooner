@@ -1,0 +1,17 @@
+{
+  "name": "sooner",
+  "version": "1.0.0",
+  "description": "Sooner is a simple Framework that provides an AJAX backbone for a whole website",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Patrick Stillhart",
+  "license": "MIT",
+  "devDependencies": {
+    "grunt": "^1.0.1",
+    "grunt-contrib-handlebars": "^1.0.0",
+    "grunt-contrib-uglify": "^2.3.0",
+    "grunt-contrib-watch": "^1.0.0"
+  }
+}

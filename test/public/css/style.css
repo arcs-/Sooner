@@ -1,0 +1,9 @@
+body {
+  margin: 0
+}
+footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  background: #f0f0f0;
+}
