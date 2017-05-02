@@ -3,6 +3,9 @@ module.exports = function(grunt) {
 	grunt.initConfig({
 
 		'uglify': {
+			options: {
+				preserveComments: 'some'
+			},
 			build: {
 				files: {
 					'dist/sooner.min.js': ['src/sooner.js']

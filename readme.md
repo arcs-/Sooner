@@ -1,24 +1,24 @@
 # Sooner
 
-Sooner is a simple Framework that provides an AJAX backbone for a whole website. All navigations and forms will be caught and sent as JSON, the JSON answer from the server will then be rendered based on your chosen templating engine.
+Sooner is a simple framework that provides an AJAX backbone for a whole website. All navigations and form actions will be caught and sent asynchronously in JSON, the answer in JSON from the server will then be rendered based on your chosen templating engine.
 
-It helps to increase the user experience and minimizes the load on a server. Sooner moves the rendering part of the view to the client, so the server simply has to send the document in JSON and the template.
+It helps to increase the user experience and minimizes the load on a server. Sooner moves the rendering part of the views to the client, so the server simply has to send the document in JSON and the template.
 
 Benefits
- * Works well for people without Javascript
  * Almost no configuration required
  * Integrates with existing code
  * Increased user experience
  * Minimizes load
+ * Fallback for people without Javascript
 
 Sooner has been written using vanilla JavaScript, no additional frameworks required.
 
 # Basic Usage
 
-The basic usage should give you an idea on how sooner.js works, later you can tweak and optimize your configuration quite a bit. This example used handlebars as a templating engine, you virtually any can be used, you could even do it without one.
+This example usage should give you an idea on how sooner.js works, later you can tweak and optimize your configuration quite a bit. Any templating engine can is suitable, as long as it works on front and backend.
 
  ## Server
- The server has to be able to send rendered HTML documents or the raw JSON Object depending on the request.
+ The server has to be able to send rendered HTML documents or raw objects in JSON depending on the request.
 
  With express.js this can be done in the following fashion.
   ```js
@@ -29,7 +29,7 @@ global.transmit = (req, res, response) => {
     else res.render(response.view, response)
 }
 
-// normal route (can be in separate file)
+// normal route (could be in separate file)
 app.get('/input', function(req, res) {
     // now instead of calling "res.render('home', {name: 'max'})" use
     transmit(req, res, {view: 'home', name: 'max'})
@@ -55,7 +55,7 @@ You should have one main layout (e.g. 'layout.hbs' ) containing all the configur
         <a href="pag2">Another page</a>
     </nav>
 
-    <!-- "wrapper" is the default id for the element to replace -->
+    <!-- "wrapper" is the default id for the element to render into -->
     <div id="wrapper">{{{body}}}</div>
 
 </body>
@@ -69,7 +69,7 @@ You should have one main layout (e.g. 'layout.hbs' ) containing all the configur
         render: function(data, callback) {
             document.title = data.view + ' - sooner.js'
             // example for a render function
-            callback(myTemplatingEngine.render(data.view, data))
+            callback( myTemplatingEngine.render(data.view, data) )
         }
 
     })
@@ -77,7 +77,7 @@ You should have one main layout (e.g. 'layout.hbs' ) containing all the configur
 </html>
  ```
 
-Each page template can have a `initialize` function
+Each page template can have a `initialize` and `end` function
 ```js
 <!-- external scripts will be loaded only once! -->
 <script src="/js/tags.js"></script>
@@ -100,7 +100,7 @@ Sooner.configure({
 ### Most important options
 
 * hostname: the domains and IPs on which sooner should work
-* render: the function which is called when the page has to be rendered
+* render: the function that gets called to render the page
 
 ```js
 Sooner.configure({
@@ -175,8 +175,8 @@ Sooner.configure({
 Next to the `.configure()` function, there are following
 
 `Sooner.navigate(href)`
-Navigates to the URL (also works with anchors)
- * href: the new URL
+Navigates to the URL or scrolls to anchor
+ * href: the new URL OR an element to scroll to
 
 `Sooner.reload()`
 Reloads the current page

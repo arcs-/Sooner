@@ -99,15 +99,19 @@
 
 	/**
 	 * Navigates to the URL (works also with anchors)
-	 * href: the new URL
+	 * href: the new URL or element to scroll to
 	 */
 	Sooner.navigate = function(href) {
 
+		if(href instanceof Element) return scrollTo( href )
+
+		var url = stringToURL(href)
+
 		// check if this is a different URL
-		if (Settings.hostname.indexOf(stringToURL(href).hostname) === -1) return window.location.href = href
+		if (Settings.hostname.indexOf(url.hostname) === -1) return window.location.href = href
 
 		// check for anchor link
-		if (stringToURL(href).pathname, window.location.pathname && href.indexOf('#') > -1) {
+		if (url.pathname === window.location.pathname && href.indexOf('#') > -1) {
 			var anchor = document.getElementById(href.substr(href.indexOf('#') + 1))
 			if (anchor) {
 				window.history.replaceState(undefined, undefined, '#' + anchor.id)
@@ -136,7 +140,7 @@
 	 * Reloads the current page
 	 */
 	Sooner.reload = function() {
-		Sooner.navigate(window.location)
+		Sooner.navigate(window.location.href)
 	}
 
 	/**
@@ -228,7 +232,6 @@
 	}
 
 	function onSubmit(e) {
-		// console.log('CATCH submit')
 
 		if (e.defaultPrevented || hasAttribute(e.target, 'passthrough')) return
 
@@ -294,7 +297,6 @@
 	}
 
 	function htmlRender(html, href, data) {
-		//console.log('render', href, data)
 
 		var userScripts = Settings.wrapper.getElementsByTagName('script')
 		executeScript(userScripts, 'end')
@@ -414,7 +416,7 @@
 			var progress = easeOutCubic(now - timeOrigin, origin, change, durration)
 
 			// if still time && not reached the bottom
-			if (timeOrigin + durration > now && (change < 0 || pageHeight < document.body.offsetHeight)) {
+			if (timeOrigin + durration > now && (change > 0 || pageHeight < document.body.offsetHeight)) {
 				requestAnimationFrame(update)
 				window.scrollTo(window.scrollX, progress)
 			} else window.scrollTo(window.scrollX, origin + change)
